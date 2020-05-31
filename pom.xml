@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example</groupId>
+    <artifactId>Cloud-Boot-Demo</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.3.RELEASE</version>
+    </parent>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <springboot.version>2.2.7.RELEASE</springboot.version>
+        <lombok.version>1.18.10</lombok.version>
+        <fastjson.version>1.2.68</fastjson.version>
+        <mybatis.boot.starter.version>2.1.2</mybatis.boot.starter.version>
+        <mysql.connector.version>8.0.19</mysql.connector.version>
+        <eureka.version>2.2.1.RELEASE</eureka.version>
+        <project.version>1.0-SNAPSHOT</project.version>
+        <commons.lang>3.9</commons.lang>
+    </properties>
+
+
+    <modules>
+        <module>Boot-Demo-Service</module>
+        <module>Boot-Demo-Manager</module>
+        <module>Boot-Demo-Dao</module>
+        <module>Boot-Demo-Common</module>
+        <module>Boot-Demo-Api</module>
+        <module>Boot-Demo-Container</module>
+        <module>Boot-Demo-Web</module>
+    </modules>
+
+
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>Boot-Demo-Dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <!-- provided：编译期有效，运行期不需要提供，不会打入包中 -->
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!--  -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.boot.starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${eureka.version}</version>
+            </dependency>
+
+            <!-- spring cloud 依赖版本 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Hoxton.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+</project>

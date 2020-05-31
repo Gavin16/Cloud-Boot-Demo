@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    mybatis 二级缓存(命名空间级缓存),开启方式
+    (1) application-local.yml 文件中设置  cache-enabled: true
+    (2) mapper文件中某namesapce 的mapper标签下增加  <cache/> 子标签
+    (3) 需要使用缓存的查询语句标签增加属性  useCache = "true"
+    (4) resultMap 映射的结果的Java类实现序列化接口
+
+    mybatis 二级缓存使用注意：
+    (1) 只有那些几乎不怎么需要修改的表使用缓存才能启动提高效率的作用，如数据字典
+    (2) 如果在会变动的表中使用缓存 记得在insert ,update,delete标签增加属性  flushCache="true"
+    (3) 如果需要使用另外一个命名空间的缓存 可以添加标签 <cache-ref namespace="com.someone.application.data.SomeMapper"/>
+        这样即使使用缓存的SQL不在 SomeMapper 的命名空间下, 也可以使用该命名空间的缓存
+    关于缓存详细介绍参考：http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache
+ -->
+
+<mapper namespace="com.demo.dao.repo.AreaRepository">
+
+    <cache></cache>
+
+    <resultMap id="SysAreaResultMap" type="SysAreaPO">
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+    </resultMap>
+
+    <select id="getLocationByCodeLv3" parameterType="java.lang.Long" resultMap="SysAreaResultMap" useCache="true">
+        SELECT s1.area_name as 'province',s2.area_name as 'city',s3.area_name as 'district'
+        FROM tb_area s1,tb_area s2,tb_area s3
+        WHERE s1.area_code=s2.area_parent_code
+        AND s2.area_code=s3.area_parent_code
+        AND s3.area_code= #{areaCode}
+    </select>
+
+    <select id="getLocationByCodeLv2" parameterType="java.lang.Long" resultMap="SysAreaResultMap" useCache="true">
+        SELECT t1.area_name as 'city', t2.area_name as 'district'
+        FROM tb_area t1,tb_area t2
+        WHERE t1.area_code = t2.area_parent_code
+        AND t2.area_code = #{areaCode}
+    </select>
+
+    <select id="getAreaCodeById" parameterType="java.lang.Long" resultType="java.lang.Long" useCache="true">
+        SELECT t.area_code from  tb_area t where id = #{id}
+    </select>
+</mapper>

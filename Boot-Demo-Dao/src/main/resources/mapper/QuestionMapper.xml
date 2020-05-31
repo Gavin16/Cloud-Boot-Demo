@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.dao.repo.QuestionRepository">
+    <resultMap id="questionResultMap" type="com.demo.dao.po.QuestionPO">
+        <result column="id" property="id"/>
+        <result column="theme" property="theme"/>
+        <result column="content" property="content"/>
+        <result column="degree" property="degree"/>
+        <result column="source" property="source"/>
+        <result column="proficiency" property="proficiency"/>
+        <result column="remind_times" property="remindTimes"/>
+        <result column="create_tm" property="createTm"/>
+    </resultMap>
+
+    <sql id="columsForKafka">
+        id,theme,content,degree,source
+    </sql>
+
+    <select id="totalRecordsNum" resultType="integer">
+        select count(1) from tb_question;
+    </select>
+
+    <!-- 随机获取一条记录, 并推送给kafka -->
+    <select id="getById" resultMap="questionResultMap" parameterType="integer">
+        select
+        <include refid="columsForKafka"/>
+        from tb_question
+        where id = #{id}
+    </select>
+
+    <!-- 消息推送后向remind_times值 + 1 -->
+    <update id="incrRemindTimes" parameterType="integer">
+        UPDATE tb_question t SET t.remind_times = t.remind_times + 1
+        WHERE t.id = #{id}
+    </update>
+
+    <!-- 批量插入,由于tb_question 表使用自增主键,因此useGeneratedKeys = true  -->
+    <insert id="batchInsert" parameterType="arraylist" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_question(theme,content,degree,source)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.theme},
+              #{item.content},
+              #{item.degree},
+              #{item.source}
+            )
+        </foreach>
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Cloud-Boot-Demo
+  profiles:
+    active: @package.environment@
+
+
+server:
+  port: 9096
+  servlet:
+    context-path: /demo
+
+
+
+
+

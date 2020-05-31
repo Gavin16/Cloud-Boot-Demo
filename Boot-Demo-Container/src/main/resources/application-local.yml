@@ -1,0 +1,15 @@
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://user:psw123@127.0.0.1:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    metadata-map:
+      my-metadata:
+        purpose: useForDemo
+        createTm: 2020
+
+
