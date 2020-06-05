@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Class: LoginRepository
- * @Description: TODO
+ * @Description: USER测试数据库访问
  * @Author: Minsky
  * @Date: 2019/9/15 15:25
  * @Version: v1.0

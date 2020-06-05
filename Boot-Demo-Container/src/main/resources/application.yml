@@ -6,10 +6,9 @@ spring:
 
 
 server:
-  port: 9096
+  port: 9098
   servlet:
     context-path: /demo
-
 
 
 

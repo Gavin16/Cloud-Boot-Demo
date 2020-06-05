@@ -26,6 +26,7 @@
         <mybatis.boot.starter.version>2.1.2</mybatis.boot.starter.version>
         <mysql.connector.version>8.0.19</mysql.connector.version>
         <eureka.version>2.2.1.RELEASE</eureka.version>
+        <actuator.version>2.2.1.RELEASE</actuator.version>
         <project.version>1.0-SNAPSHOT</project.version>
         <commons.lang>3.9</commons.lang>
     </properties>
@@ -116,4 +117,50 @@
         </dependencies>
 
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>http://localhost:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>http://localhost:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!-- 项目发布到如下私有仓库的 snapshot库和release库-->
+    <distributionManagement>
+        <repository>
+            <id>user-release</id>
+            <name>User Project Release</name>
+            <!-- 该url指的是nexus仓库中 maven-snapshots 仓库的地址,可以直接去页面copy仓库地址 -->
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>user-snapshots</id>
+            <name>User Project SNAPSHOTS</name>
+            <!-- 该url指的是nexus仓库中 maven-snapshots 仓库的地址,可以直接去页面copy仓库地址 -->
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
