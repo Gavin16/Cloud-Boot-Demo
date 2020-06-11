@@ -7,4 +7,15 @@
         select * from user where id = #{id}
     </select>
 
+
+    <update id="updateUser" parameterType="com.demo.dao.po.UserPO">
+        update user
+        <set>
+            <if test="username != null and username != ''"> username = #{username},</if>
+            <if test="age != null">age = #{age}, </if>
+            <if test="name != null and name != ''"> name = #{name},</if>
+            <if test="balance != null"> balance = #{balance} </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

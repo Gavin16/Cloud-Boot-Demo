@@ -12,4 +12,10 @@ public class UserConverter {
         BeanUtils.copyProperties(userPO,userDto);
         return userDto;
     }
+
+    public static UserPO convertToPo(UserDto userDto){
+        UserPO userPO = new UserPO();
+        BeanUtils.copyProperties(userDto,userPO);
+        return userPO;
+    }
 }

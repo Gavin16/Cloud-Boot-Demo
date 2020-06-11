@@ -1,7 +1,9 @@
 package com.demo.api.dto.response;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class QuestionOptionDto implements Serializable {
 
     private String path;
@@ -24,11 +26,4 @@ public class QuestionOptionDto implements Serializable {
         this.source = source;
     }
 
-    @Override
-    public String toString() {
-        return "QuestionOptionDto{" +
-                "path='" + path + '\'' +
-                ", source='" + source + '\'' +
-                '}';
-    }
 }

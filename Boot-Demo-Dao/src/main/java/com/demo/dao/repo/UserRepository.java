@@ -16,4 +16,7 @@ import org.springframework.stereotype.Component;
 public interface UserRepository {
 
     UserPO selectUserById(Long id);
+
+
+    Integer updateUser(UserPO userPO);
 }

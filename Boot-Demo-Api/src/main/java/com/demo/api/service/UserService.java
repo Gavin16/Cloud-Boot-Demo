@@ -12,4 +12,11 @@ public interface UserService {
      * @return com.demo.api.dto.request.UserDto
      */
     UserDto selectUserById(Long id);
+
+    /**
+     * 修改User 信息
+     * @param userDto
+     * @return
+     */
+    Integer updateUser(UserDto userDto);
 }

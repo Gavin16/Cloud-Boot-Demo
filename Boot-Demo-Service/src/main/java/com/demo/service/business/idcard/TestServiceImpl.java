@@ -1,4 +1,4 @@
-package com.demo.service.idcard;
+package com.demo.service.business.idcard;
 
 import com.demo.api.service.TestService;
 import org.springframework.stereotype.Service;

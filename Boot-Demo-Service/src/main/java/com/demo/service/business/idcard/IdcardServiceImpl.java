@@ -1,4 +1,4 @@
-package com.demo.service.idcard;
+package com.demo.service.business.idcard;
 
 import com.demo.api.dto.Result;
 import com.demo.api.service.IdcardService;

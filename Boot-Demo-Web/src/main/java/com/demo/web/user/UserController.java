@@ -40,6 +40,11 @@ public class UserController {
         return Result.success(userDto);
     }
 
+    @PostMapping("/update")
+    public Result updateUser(@RequestBody UserDto dto){
+        Integer integer = userService.updateUser(dto);
+        return Result.success(integer);
+    }
 
     @GetMapping("/user-instance")
     public Result showInfo(){

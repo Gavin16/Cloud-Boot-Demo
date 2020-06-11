@@ -3,7 +3,7 @@ eureka:
     healthcheck:
       enabled: true
     service-url:
-      defaultZone: http://user:psw123@127.0.0.1:8761/eureka
+      defaultZone: http://user:psw123@localhost:8761/eureka
 
   instance:
     prefer-ip-address: true
@@ -13,3 +13,24 @@ eureka:
         createTm: 2020
 
 
+# 暴露actuator 监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: /
+
+
+feign:
+  hystrix:
+    enabled: true
+
+# actuator 监控数据demo
+info:
+  app:
+    name: @project.artifactId@
+    encoding: @project.build.sourceEncoding@
+    java:
+      source: @java.version@
+      target: @java.version@

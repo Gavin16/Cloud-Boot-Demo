@@ -10,7 +10,7 @@ public class UserPO {
     /** user 主键 id */
     private Long id;
 
-    private String userName;
+    private String username;
 
     private String name;
 
