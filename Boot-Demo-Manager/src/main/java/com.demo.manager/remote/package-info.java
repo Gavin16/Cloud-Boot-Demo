@@ -3,7 +3,7 @@
  * @Date: 2020/6/6 22:07
  * @Description:
  */
-package com.demo.service.remote;
+package com.demo.manager.remote;
 /**
  * 调用远程服务
  */

@@ -31,5 +31,12 @@
             <artifactId>Boot-Demo-Service</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>Boot-Demo-Manager</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

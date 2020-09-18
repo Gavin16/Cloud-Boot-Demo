@@ -2,7 +2,7 @@ package com.demo.web.user;
 
 import com.alibaba.fastjson.JSON;
 import com.demo.api.dto.response.SysAreaDTO;
-import com.demo.service.remote.AreaFeignClient;
+import com.demo.api.service.AreaService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.Alias;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ import javax.annotation.Resource;
 public class AreaController {
 
     @Resource
-    private AreaFeignClient areaFeignClient;
+    private AreaService areaService;
 
     @GetMapping("getById/{id}")
     public SysAreaDTO getAreaById(@PathVariable Long id){
         log.info("查询地区id:{}", id);
-        SysAreaDTO sysAreaDTO = areaFeignClient.selectAreaById(id);
+        SysAreaDTO sysAreaDTO = areaService.getAreaById(id);
         return sysAreaDTO;
     }
 }

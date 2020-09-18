@@ -31,7 +31,6 @@
         <commons.lang>3.9</commons.lang>
     </properties>
 
-
     <modules>
         <module>Boot-Demo-Service</module>
         <module>Boot-Demo-Manager</module>

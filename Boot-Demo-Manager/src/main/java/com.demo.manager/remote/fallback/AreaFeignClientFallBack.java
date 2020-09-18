@@ -1,7 +1,7 @@
-package com.demo.service.remote.fallback;
+package com.demo.manager.remote.fallback;
 
 import com.demo.api.dto.response.SysAreaDTO;
-import com.demo.service.remote.AreaFeignClient;
+import com.demo.manager.remote.AreaFeignClient;
 import org.springframework.stereotype.Component;
 
 /**

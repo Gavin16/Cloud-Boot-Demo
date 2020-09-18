@@ -142,6 +142,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <!-- 包含镜像仓库的完整容器地址 -->
                 <configuration>
                     <imageName>registry.cn-shenzhen.aliyuncs.com/minsky/boot-demo-container:1.1.5</imageName>
                     <dockerDirectory>${project.basedir}/</dockerDirectory>

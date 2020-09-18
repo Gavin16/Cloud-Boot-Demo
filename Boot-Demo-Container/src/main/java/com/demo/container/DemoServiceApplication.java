@@ -22,7 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan("com.demo.dao")
-@ComponentScan(basePackages = {"com.demo.service.**","com.demo.web.**"})
+@ComponentScan(basePackages = {"com.demo.*.**","com.demo.web.**"})
 @EnableFeignClients
 @EnableHystrix
 @EnableHystrixDashboard
