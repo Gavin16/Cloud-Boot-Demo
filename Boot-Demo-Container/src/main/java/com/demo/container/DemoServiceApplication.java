@@ -18,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * 项目搭建
  * 1.若启动无法暴露接口(404)时, 注意加上ComponentScan注解扫描controller包
+ * 2.如出现包扫描一直无法扫描到特定的包，可考虑看下包名中的每一级路径是否出现"com.demo" 这样的路径名
  */
 @SpringBootApplication
 @EnableDiscoveryClient
