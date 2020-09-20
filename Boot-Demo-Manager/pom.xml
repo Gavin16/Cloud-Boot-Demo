@@ -18,5 +18,11 @@
             <artifactId>Boot-Demo-Api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>Boot-Demo-Dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

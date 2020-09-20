@@ -2,7 +2,7 @@ package com.demo.service.business.area;
 
 import com.demo.api.dto.response.SysAreaDTO;
 import com.demo.api.service.AreaService;
-import com.demo.manager.remote.AreaFeignClient;
+import com.demo.manager.remote.area.AreaFeignClient;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
