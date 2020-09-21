@@ -18,7 +18,6 @@ import javax.annotation.Resource;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-
     @Resource
     private UserRepository userRepository;
 
@@ -42,6 +41,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return integer;
+    }
+
+    @Override
+    public Integer deleteUserById(Long id) {
+        return userRepository.deleteById(id);
     }
 
     @Transactional(rollbackFor = Exception.class)

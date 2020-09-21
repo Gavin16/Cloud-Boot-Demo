@@ -1,6 +1,7 @@
 package com.demo.dao.repo;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.demo.dao.po.UserPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @Version: v1.0
  */
 @Mapper
-public interface UserRepository {
+public interface UserRepository extends BaseMapper<UserPO> {
 
     UserPO selectUserById(Long id);
 

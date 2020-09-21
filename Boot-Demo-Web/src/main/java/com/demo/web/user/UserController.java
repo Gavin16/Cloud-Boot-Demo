@@ -59,4 +59,10 @@ public class UserController {
         ServiceInstance instance = loadBalancerClient.choose("Cloud-Boot-Demo");
         LOGGER.info("当前访问服务:{}:{}:{}",instance.getServiceId(),instance.getHost(),instance.getPort());
     }
+
+    @GetMapping("/delete/{id}")
+    public Integer deleteById(@PathVariable Long id){
+        return userService.deleteUserById(id);
+    }
+
 }

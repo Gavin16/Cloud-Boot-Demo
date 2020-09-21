@@ -24,6 +24,7 @@
         <lombok.version>1.18.10</lombok.version>
         <fastjson.version>1.2.68</fastjson.version>
         <mybatis.boot.starter.version>2.1.2</mybatis.boot.starter.version>
+        <mybatis.plus.version>3.3.2</mybatis.plus.version>
         <mysql.connector.version>8.0.19</mysql.connector.version>
         <eureka.version>2.2.1.RELEASE</eureka.version>
         <actuator.version>2.2.1.RELEASE</actuator.version>
@@ -125,10 +126,15 @@
             </dependency>
 
 
+<!--            <dependency>-->
+<!--                <groupId>org.mybatis.spring.boot</groupId>-->
+<!--                <artifactId>mybatis-spring-boot-starter</artifactId>-->
+<!--                <version>${mybatis.boot.starter.version}</version>-->
+<!--            </dependency>-->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.boot.starter.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
             </dependency>
 
             <dependency>

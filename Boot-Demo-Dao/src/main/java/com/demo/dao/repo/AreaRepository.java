@@ -1,8 +1,9 @@
 package com.demo.dao.repo;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.demo.dao.po.SysAreaPO;
 
-public interface AreaRepository {
+public interface AreaRepository extends BaseMapper<SysAreaPO> {
 
     SysAreaPO getLocationByCodeLv3(long areaCode);
 

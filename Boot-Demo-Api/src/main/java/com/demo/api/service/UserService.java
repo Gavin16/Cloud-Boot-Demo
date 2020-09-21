@@ -19,4 +19,11 @@ public interface UserService {
      * @return
      */
     Integer updateUser(UserDto userDto);
+
+    /**
+     * MyBatis 逻辑删除测试
+     * @param id
+     * @return
+     */
+    Integer deleteUserById(Long id);
 }
