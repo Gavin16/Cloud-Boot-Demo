@@ -29,14 +29,16 @@ public class ParamValidateAspect {
 
 
     @Around("@annotation(com.demo.api.annotation.ParamValidator)")
-    public void process(ProceedingJoinPoint point) throws Throwable {
+    public Object process(ProceedingJoinPoint point) throws Throwable {
         log.info("进入ParamCheck注解切面方法...");
         Object[] args = point.getArgs();
         log.info("方法执行参数:【{}】",JSON.toJSONString(args));
 
         // 从传参中获取需要验证的对象
         Object paramDto = getRelatedParamDto(args);
-        if(Objects.isNull(paramDto)){return;}
+        if(Objects.isNull(paramDto)){
+            return point.proceed(args);
+        }
 
         // 从当前方法中获取注解信息
         ParamValidator currAnnotation = getParamValidator(point);
@@ -57,6 +59,7 @@ public class ParamValidateAspect {
                 }
             }
         }
+        return point.proceed(args);
     }
 
 
@@ -92,7 +95,6 @@ public class ParamValidateAspect {
      * @param type
      */
     private void checkParamByType(Object obj,Field field, Class<?> type) throws Exception{
-        String name = type.getName();
         Object fieldObj = field.get(obj);
         // 按类型做校验
         if(fieldObj instanceof String){
@@ -105,7 +107,7 @@ public class ParamValidateAspect {
                 return;
             }
         }
-        throw new ServiceException("500",name + "传参不能为空");
+        throw new ServiceException("500",field.getName() + "传参不能为空");
     }
 
 

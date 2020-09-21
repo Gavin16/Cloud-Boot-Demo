@@ -1,5 +1,6 @@
 package com.demo.web.user;
 
+import com.demo.api.annotation.ParamValidator;
 import com.demo.api.dto.Result;
 import com.demo.api.dto.request.UserDto;
 import com.demo.api.service.UserService;
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
+    @ParamValidator(fields = {"id"})
     public Result updateUser(@RequestBody UserDto dto){
         Integer integer = userService.updateUser(dto);
         return Result.success(integer);

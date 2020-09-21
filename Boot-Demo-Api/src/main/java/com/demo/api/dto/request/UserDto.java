@@ -1,5 +1,6 @@
 package com.demo.api.dto.request;
 
+import com.demo.api.annotation.UseParamValidator;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @Version: v1.0
  */
 @Data
+@UseParamValidator
 public class UserDto {
     /** user 主键 id */
     private Long id;
