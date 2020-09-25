@@ -2,11 +2,13 @@ package com.demo.api.dto;
 
 
 import com.alibaba.fastjson.JSON;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Data
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     private String requestId;
@@ -17,6 +19,8 @@ public class Result<T> implements Serializable {
     private String date;
     private String version;
     private T obj;
+
+    private static final String SUCCESS_CODE = "10000";
 
     @Override
     public String toString() {
@@ -34,6 +38,7 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<>(true);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         result.setDate(sdf.format(new Date()));
+        result.setCode(SUCCESS_CODE);
         result.setObj(obj);
         return result;
     }
@@ -62,68 +67,4 @@ public class Result<T> implements Serializable {
         return success;
     }
 
-
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public Integer getBusiness() {
-        return business;
-    }
-
-    public void setBusiness(Integer business) {
-        this.business = business;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public T getObj() {
-        return obj;
-    }
-
-    public void setObj(T obj) {
-        this.obj = obj;
-    }
 }

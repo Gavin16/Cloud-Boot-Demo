@@ -65,4 +65,9 @@ public class UserController {
         return userService.deleteUserById(id);
     }
 
+    @PostMapping("create")
+    @ParamValidator(fields = {"username","name","age","balance"})
+    public UserDto createUser(@RequestBody UserDto dto){
+        return userService.createUser(dto);
+    }
 }

@@ -20,4 +20,6 @@ public interface UserRepository extends BaseMapper<UserPO> {
 
 
     Integer updateUser(UserPO userPO);
+
+    Long createUser(UserPO userPO);
 }

@@ -26,4 +26,10 @@ public interface UserService {
      * @return
      */
     Integer deleteUserById(Long id);
+
+    /**
+     * 新增用户
+     * @return
+     */
+    UserDto createUser(UserDto dto);
 }
