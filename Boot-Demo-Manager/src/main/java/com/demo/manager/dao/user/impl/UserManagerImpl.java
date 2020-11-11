@@ -7,6 +7,8 @@ import com.demo.dao.repo.UserRepository;
 import com.demo.manager.dao.user.UserManager;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -37,4 +39,13 @@ public class UserManagerImpl implements UserManager {
         UserPO userPO = BeanConverter.convert(dto, UserPO.class);
         return userRepository.createUser(userPO);
     }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.NESTED)
+    public Long increaceBalance(Long id) {
+        UserPO userPO = userRepository.selectUserById(id-1);
+        return userRepository.increaceBalance(userPO);
+    }
+
 }

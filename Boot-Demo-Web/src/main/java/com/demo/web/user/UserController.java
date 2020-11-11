@@ -3,6 +3,7 @@ package com.demo.web.user;
 import com.demo.api.annotation.ParamValidator;
 import com.demo.api.dto.Result;
 import com.demo.api.dto.request.UserDto;
+import com.demo.api.exception.ServiceException;
 import com.demo.api.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,7 +47,12 @@ public class UserController {
     @PostMapping("/update")
     @ParamValidator(fields = {"id"})
     public Result updateUser(@RequestBody UserDto dto){
-        Integer integer = userService.updateUser(dto);
+        Integer integer = null;
+        try {
+            integer = userService.updateUser(dto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return Result.success(integer);
     }
 
@@ -63,7 +70,13 @@ public class UserController {
 
     @GetMapping("/delete/{id}")
     public Integer deleteById(@PathVariable Long id){
-        return userService.deleteUserById(id);
+        Integer integer = null;
+        try {
+            integer = userService.deleteUserById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return integer;
     }
 
     @PostMapping("create")

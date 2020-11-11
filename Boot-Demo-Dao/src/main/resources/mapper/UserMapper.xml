@@ -24,4 +24,17 @@
         insert into user(username,name ,age,balance)
         values (#{username},#{name},#{age},#{balance})
     </insert>
+
+
+    <update id="increaceBalance" parameterType="com.demo.dao.po.UserPO">
+        update user
+        <set>
+            <if test="username != null and username != ''"> username = #{username},</if>
+            <if test="age != null">age = #{age}, </if>
+            <if test="name != null and name != ''"> name = #{name},</if>
+            balance = #{balance} + 100
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

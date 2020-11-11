@@ -9,6 +9,10 @@ public class ServiceException extends RuntimeException implements Serializable {
 
     public ServiceException(){}
 
+    public ServiceException(String msg){
+        super(msg);
+    }
+
     public ServiceException(String code , String msg){
         super(msg);
         this.code = code ;

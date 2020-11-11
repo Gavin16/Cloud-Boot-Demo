@@ -13,4 +13,6 @@ public interface UserManager {
     Integer deleteById(Long id);
 
     Long createUser(UserDto dto);
+
+    Long increaceBalance(Long id);
 }

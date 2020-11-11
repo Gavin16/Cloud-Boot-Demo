@@ -1,6 +1,7 @@
 package com.demo.api.service;
 
 import com.demo.api.dto.request.UserDto;
+import com.demo.api.exception.ServiceException;
 
 public interface UserService {
 
@@ -18,14 +19,14 @@ public interface UserService {
      * @param userDto
      * @return
      */
-    Integer updateUser(UserDto userDto);
+    Integer updateUser(UserDto userDto) throws Exception;
 
     /**
      * MyBatis 逻辑删除测试
      * @param id
      * @return
      */
-    Integer deleteUserById(Long id);
+    Integer deleteUserById(Long id) throws Exception;
 
     /**
      * 新增用户
