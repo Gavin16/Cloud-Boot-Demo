@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -66,8 +67,11 @@ public class UserController {
     }
 
     @PostMapping("create")
-    @ParamValidator(fields = {"username","name","age","balance"})
+//    @ParamValidator(fields = {"username","name","age","balance"})
     public UserDto createUser(@RequestBody UserDto dto){
+        Optional<UserDto> input = Optional.ofNullable(dto);
+        input.ifPresent(e->e.getUsername());
+
         return userService.createUser(dto);
     }
 }

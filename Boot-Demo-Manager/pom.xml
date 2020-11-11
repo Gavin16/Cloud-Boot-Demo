@@ -24,5 +24,12 @@
             <artifactId>Boot-Demo-Dao</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- 使用jedis连接redis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
 </project>

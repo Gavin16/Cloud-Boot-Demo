@@ -4,13 +4,10 @@ import com.demo.api.dto.request.UserDto;
 import com.demo.api.service.UserService;
 import com.demo.common.converters.UserConverter;
 import com.demo.dao.po.UserPO;
-import com.demo.dao.repo.UserRepository;
 import com.demo.manager.dao.user.UserManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 
