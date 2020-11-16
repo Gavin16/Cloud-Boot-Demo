@@ -7,9 +7,9 @@ import com.demo.common.converters.UserConverter;
 import com.demo.dao.po.UserPO;
 import com.demo.manager.dao.user.UserManager;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.jsqlparser.statement.execute.Execute;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -67,6 +67,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDto createUser(UserDto dto) {
+
+
         Long userId = userManager.createUser(dto);
         return userManager.selectUserById(userId);
     }

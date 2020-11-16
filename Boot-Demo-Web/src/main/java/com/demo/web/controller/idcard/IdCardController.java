@@ -1,4 +1,4 @@
-package com.demo.web.idcard;
+package com.demo.web.controller.idcard;
 
 import com.demo.api.dto.Result;
 import com.demo.api.service.IdcardService;

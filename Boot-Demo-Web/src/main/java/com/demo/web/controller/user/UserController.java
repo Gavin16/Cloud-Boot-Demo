@@ -1,17 +1,14 @@
-package com.demo.web.user;
+package com.demo.web.controller.user;
 
 import com.demo.api.annotation.ParamValidator;
 import com.demo.api.dto.Result;
 import com.demo.api.dto.request.UserDto;
-import com.demo.api.exception.ServiceException;
 import com.demo.api.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -80,7 +77,7 @@ public class UserController {
     }
 
     @PostMapping("create")
-//    @ParamValidator(fields = {"username","name","age","balance"})
+    @ParamValidator(fields = {"username","name","age","balance"})
     public UserDto createUser(@RequestBody UserDto dto){
         Optional<UserDto> input = Optional.ofNullable(dto);
         input.ifPresent(e->e.getUsername());

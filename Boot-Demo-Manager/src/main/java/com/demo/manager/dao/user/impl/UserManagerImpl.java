@@ -41,6 +41,11 @@ public class UserManagerImpl implements UserManager {
     }
 
 
+    /**
+     * 验证事务传播机制
+     * @param id
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.NESTED)
     public Long increaceBalance(Long id) {
