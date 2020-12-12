@@ -4,16 +4,21 @@ import com.demo.api.annotation.ParamValidator;
 import com.demo.api.dto.Result;
 import com.demo.api.dto.request.UserDto;
 import com.demo.api.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.hash.Jackson2HashMapper;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -27,13 +32,26 @@ public class UserController {
     private UserService userService;
 
     @Resource
-    private RestTemplate restTemplate;
-
-    @Resource
     private DiscoveryClient discoveryClient;
 
     @Resource
     private LoadBalancerClient loadBalancerClient;
+
+    @Resource
+    @Qualifier("generalRedisTemplate")
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    @Qualifier("JSON2NormalHashMap")
+    private Jackson2HashMapper jhm;
+
+    @PostMapping("cacheUser")
+    public Result cacheUser(@RequestBody UserDto dto){
+        stringRedisTemplate.opsForHash().putAll(dto.getUsername(), jhm.toHash(dto));
+        Map<Object, Object> entries = stringRedisTemplate.opsForHash().entries(dto.getUsername());
+        return Result.success(entries);
+    }
+
 
     @GetMapping("/selectById/{id}")
     public Result selectUserById(@PathVariable Long id){
