@@ -3,6 +3,7 @@ eureka:
     healthcheck:
       enabled: true
     service-url:
+      # eureka-server 为容器名
       defaultZone: http://user:psw123@localhost:8761/eureka
 
   instance:
