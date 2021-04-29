@@ -34,9 +34,11 @@ public class DistributedLockTest {
             new Thread(()->{
                 try {
                     boolean locked = redisLock.addLock(lockName);
+                    System.out.println(Thread.currentThread().getName() + " is locked:" + locked);
                     cntVal += 1;
                 } finally {
                     boolean unlock = redisLock.unlock(lockName);
+                    System.out.println(Thread.currentThread().getName() + " is unlocked:" + unlock);
                     latch.countDown();
                 }
             }).start();
