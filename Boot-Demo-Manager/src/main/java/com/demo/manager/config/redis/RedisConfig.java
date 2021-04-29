@@ -1,6 +1,7 @@
 package com.demo.manager.config.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -38,12 +39,24 @@ public class RedisConfig {
 
 
     @Bean
-    public DefaultRedisScript<Long> redisScript() {
+    @Qualifier("checkAndDeleteKey")
+    public DefaultRedisScript<Long> checkAndDeleteKey() {
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
         redisScript.setResultType(Long.class);
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("scripts/checkAndDeleteKey.lua")));
         return redisScript;
     }
+
+
+    @Bean
+    @Qualifier("prolongKeyExpireTime")
+    public DefaultRedisScript<Long> prolongKeyExpireTime() {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        redisScript.setResultType(Long.class);
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("scripts/prolongKeyExpireTime.lua")));
+        return redisScript;
+    }
+
 
     @Bean
     public Jackson2HashMapper normalObjectMapper(){
