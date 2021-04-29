@@ -1,6 +1,5 @@
 package com.demo.container;
 
-import com.demo.web.servlet.MyServlet;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

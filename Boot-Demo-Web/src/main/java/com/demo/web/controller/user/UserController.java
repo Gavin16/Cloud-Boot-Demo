@@ -38,11 +38,9 @@ public class UserController {
     private LoadBalancerClient loadBalancerClient;
 
     @Resource
-    @Qualifier("generalRedisTemplate")
     private StringRedisTemplate stringRedisTemplate;
 
     @Resource
-    @Qualifier("JSON2NormalHashMap")
     private Jackson2HashMapper jhm;
 
     @PostMapping("cacheUser")
