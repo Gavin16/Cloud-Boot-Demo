@@ -1,21 +1,28 @@
 package com.demo.web.controller.test;
 
-import com.demo.manager.dtlock.RedisDistributedLock;
+import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Lock;
 
 @RestController
 @RequestMapping("lockTest")
 public class DistributedLockTest {
 
     @Autowired
-    private RedisDistributedLock redisLock;
+    @Qualifier("zkDistributedLock")
+    private Lock distributedLock;
 
-    private static final int THREAD_NUM = 100;
+    @Autowired
+    @Qualifier("testLock")
+    private RLock redissonLock;
+
+    private static final int THREAD_NUM = 2000;
     private volatile int cntVal = 0;
 
     private CountDownLatch latch;
@@ -29,24 +36,41 @@ public class DistributedLockTest {
     public void TestRedisDistLock() throws InterruptedException {
         cntVal = 0;
         latch = new CountDownLatch(THREAD_NUM);
-        String lockName = "cntLock";
         for(int i = 0 ; i < THREAD_NUM ; i++){
             new Thread(()->{
                 try {
-                    boolean locked = redisLock.addLock(lockName);
-                    System.out.println(Thread.currentThread().getName() + " is locked:" + locked);
+                    distributedLock.lock();
                     cntVal += 1;
                 } finally {
-                    boolean unlock = redisLock.unlock(lockName);
-                    System.out.println(Thread.currentThread().getName() + " is unlocked:" + unlock);
+                    distributedLock.unlock();
                     latch.countDown();
                 }
             }).start();
         }
 
         latch.await();
-        System.out.println("multi thread cnt result : " + cntVal);
-
+        System.out.println("multi thread count result : " + cntVal);
     }
+
+
+    @GetMapping("redissonLock")
+    public void TestRedissionLock() throws InterruptedException {
+        cntVal = 0;
+        latch = new CountDownLatch(THREAD_NUM);
+        for(int i = 0 ; i < THREAD_NUM ; i++){
+            new Thread(()->{
+                try {
+                    redissonLock.lock();
+                    cntVal += 1;
+                } finally {
+                    redissonLock.unlock();
+                    latch.countDown();
+                }
+            }).start();
+        }
+        latch.await();
+        System.out.println("multi thread count result : " + cntVal);
+    }
+
 
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Redis 实现分布式锁
@@ -27,11 +29,12 @@ import java.util.concurrent.TimeUnit;
  * 在版本1的基础上增加：释放锁操作改为 lua 脚本封装的原子操作
  *
  * 版本3:
- * 增加子线程定时延长过期时间 -- 如果创建子线程的父线程挂了，子线程沦为孤儿线程会怎么样？
+ * 增加子线程定时延长过期时间
+ * -- 如果创建子线程的父线程挂了，子线程沦为孤儿线程会怎么样?  --> 子线程会一直执行，直到不存在用户线程。
  *
  */
 @Component
-public class RedisDistributedLock {
+public class RedisDistributedLock implements Lock {
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
@@ -52,21 +55,7 @@ public class RedisDistributedLock {
 
     Map<String,String> threadUUIDMap = new ConcurrentHashMap<>();
 
-
-    public boolean addLock(String lockName){
-        // 当前业务名作为key; 临时生成的UUID 作为value
-        String threadName = Thread.currentThread().getName();
-        String value = UUID.randomUUID().toString();
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        for(boolean isOK = false ; !isOK ;){
-            isOK = valueOperations.setIfAbsent(lockName, value, expireTm, TimeUnit.SECONDS);
-        }
-        // 设置守护线程延长分布式锁过期时间, 每隔 expireTm/3 时长执行一次
-        addDaemonProlongThread(lockName,value,expireTm);
-
-        threadUUIDMap.put(threadName,value);
-        return true;
-    }
+    private static final String LOCK_NAME = RedisDistributedLock.class.getName();
 
     /**
      * 设计前明确
@@ -76,12 +65,68 @@ public class RedisDistributedLock {
      * (4) 啥时候结束守护线程的执行 -- 线程执行完之后，释放锁之后
      */
     private void addDaemonProlongThread(String lockName,String uuid,int expireTm) {
-        SubDaemonThread subDaemonThread = new SubDaemonThread(redisTemplate, prolongScript, lockName, uuid);
+        SubDaemonThread subDaemonThread = new SubDaemonThread(redisTemplate, prolongScript, lockName, uuid,Thread.currentThread());
         subDaemonThread.setDaemon(true);
         // 存入ThreadLocal , 释放锁时从ThreadLocal 取出并结束线程执行
         threadLocal.set(subDaemonThread);
 
         subDaemonThread.start();
+    }
+
+    @Override
+    public void lock() {
+        // 当前业务名作为key; 临时生成的UUID 作为value
+        String threadName = Thread.currentThread().getName();
+        String value = UUID.randomUUID().toString();
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        for(boolean isOK = false ; !isOK ;){
+            isOK = valueOperations.setIfAbsent(LOCK_NAME, value, expireTm, TimeUnit.SECONDS);
+        }
+        // 设置守护线程延长分布式锁过期时间, 每隔 expireTm/3 时长执行一次
+        addDaemonProlongThread(LOCK_NAME,value,expireTm);
+
+        threadUUIDMap.put(threadName,value);
+    }
+
+    @Override
+    public void unlock() {
+        String threadName = Thread.currentThread().getName();
+        String uuid = threadUUIDMap.get(threadName);
+        // 执行删除结果
+        Object execute = redisTemplate.execute(delScript, Lists.newArrayList(LOCK_NAME), uuid);
+        if(Objects.nonNull(execute)){
+            Long aLong = Long.valueOf(String.valueOf(execute));
+            // 删除成功返回1,失败返回0
+            if(aLong < 1){
+
+            }
+        }
+        threadUUIDMap.remove(threadName);
+        SubDaemonThread thread = threadLocal.get();
+        if(Objects.nonNull(thread)){
+            thread.setStopped();
+            threadLocal.remove();
+        }
+    }
+
+    @Override
+    public Condition newCondition() {
+        return null;
+    }
+
+    @Override
+    public void lockInterruptibly() throws InterruptedException {
+
+    }
+
+    @Override
+    public boolean tryLock() {
+        return false;
+    }
+
+    @Override
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+        return false;
     }
 
 
@@ -90,6 +135,7 @@ public class RedisDistributedLock {
         private DefaultRedisScript<Long> prolongScript;
         private String lockName;
         private String uuid;
+        private Thread lockHolder;
         private volatile boolean stopped = false;
 
         public void setStopped(){
@@ -97,17 +143,18 @@ public class RedisDistributedLock {
         }
 
         public SubDaemonThread(RedisTemplate<String,Object> redisTemplate,
-                             DefaultRedisScript<Long> prolongScript,String lockName,String uuid){
+                             DefaultRedisScript<Long> prolongScript,String lockName,String uuid,Thread lockHolder){
             this.redisTemplate =  redisTemplate;
             this.prolongScript = prolongScript;
             this.lockName = lockName;
             this.uuid = uuid;
+            this.lockHolder = lockHolder;
         }
 
         @Override
         public void run() {
             int period = (expireTm / 3 <= 0 ) ? 1 : expireTm/3;
-            while(!stopped){
+            while(!stopped && lockHolder.isAlive()){
                 try {
                     // 延长锁之前先判断当前value 是否与当前线程uuid 相同
                     // 相同则延长当前k-v 过期时间至 expireTm
@@ -127,30 +174,4 @@ public class RedisDistributedLock {
         }
     }
 
-
-    /**
-     * 释放锁时使用lua 脚本将 线程判断和k-v删除封装为原子操作后,锁正常工作且性能提升
-     * @param lockName
-     * @return
-     */
-    public boolean unlock(String lockName){
-        String threadName = Thread.currentThread().getName();
-        String uuid = threadUUIDMap.get(threadName);
-        // 执行删除结果
-        Object execute = redisTemplate.execute(delScript, Lists.newArrayList(lockName), uuid);
-        if(Objects.nonNull(execute)){
-            Long aLong = Long.valueOf(String.valueOf(execute));
-            // 删除成功返回1,失败返回0
-            if(aLong < 1){
-                return false;
-            }
-        }
-        threadUUIDMap.remove(threadName);
-        SubDaemonThread thread = threadLocal.get();
-        if(Objects.nonNull(thread)){
-            thread.setStopped();
-            threadLocal.remove();
-        }
-        return true;
-    }
 }
