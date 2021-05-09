@@ -1,37 +1,41 @@
-eureka:
-  client:
-    healthcheck:
-      enabled: true
-    service-url:
-      # eureka-server 为容器名
-      defaultZone: http://user:psw123@localhost:8761/eureka
-
-  instance:
-    prefer-ip-address: true
-    metadata-map:
-      my-metadata:
-        purpose: useForDemo
-        createTm: 2020
-
-
-# 暴露actuator 监控端点
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-      base-path: /
-
-
-feign:
-  hystrix:
-    enabled: true
-
-# actuator 监控数据demo
-info:
-  app:
-    name: @project.artifactId@
-    encoding: @project.build.sourceEncoding@
-    java:
-      source: @java.version@
-      target: @java.version@
+## mysql 配置
+#spring:
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false&useAffectedRows=true&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#    username: root
+#    password: 123456
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    hikari:
+#      minimum-idle: 4
+#      maximum-pool-size: 10
+#      auto-commit: true
+#      connection-timeout: 10000
+#      connection-test-query: select 1
+#
+## redis 配置
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    database: 0
+#    password: 123456
+#    lettuce:
+#      pool:
+#        max-active: 20
+#        max-wait: 10
+#        max-idle: 3
+#        min-idle: 0
+#        time-between-eviction-runs: 15000
+#
+## mybatis-plus 配置
+#mybatis-plus:
+#  mapper-locations: classpath:mapper/*.xml
+#  configuration:
+#    cache-enabled: false
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  type-aliases-package: com.demo.dao.po
+#  global-config:
+#    db-config:
+#      insert-strategy: default
+#      logic-delete-value: 1
+#      logic-not-delete-value: 0

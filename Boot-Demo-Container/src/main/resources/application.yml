@@ -3,13 +3,25 @@ spring:
     name: Cloud-Boot-Demo
   profiles:
     active: @package.environment@
-
+  #nacos 服务注册发现与动态配置
+  cloud:
+    nacos:
+      config:
+        server-addr: 121.5.190.51:8848
+        timeout: 10000
+      discovery:
+        server-addr: 121.5.190.51:8848
+        heart-beat-timeout: 30000
 
 server:
   port: 9098
   servlet:
     context-path: /demo
 
+#feign客户端开启
+feign:
+  hystrix:
+    enabled: true
 
 
 
