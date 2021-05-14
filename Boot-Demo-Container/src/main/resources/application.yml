@@ -11,7 +11,7 @@ spring:
         timeout: 10000
       discovery:
         server-addr: 121.5.190.51:8848
-        heart-beat-timeout: 30000
+        heart-beat-timeout: 15000
 
 server:
   port: 9098
