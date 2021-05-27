@@ -1,4 +1,4 @@
-package com.demo.manager.config.redis;
+package com.demo.manager.config.zk;
 
 import lombok.Data;
 import org.I0Itec.zkclient.ZkClient;
