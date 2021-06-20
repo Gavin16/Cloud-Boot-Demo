@@ -1,6 +1,7 @@
 package com.demo.api.dto.request;
 
 
+import javax.validation.constraints.NotNull;
 
 /**
  * @Class: LoginDto
@@ -13,6 +14,7 @@ public class LoginDto  {
     /** user 主键 id */
     private int id;
 
+    @NotNull(message = "用户名不能为空")
     private String loginName;
 
     private String userName;
