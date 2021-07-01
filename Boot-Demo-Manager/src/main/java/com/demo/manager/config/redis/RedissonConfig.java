@@ -17,15 +17,16 @@ public class RedissonConfig {
     @Value("${redis.address}")
     private String address;
 
-    @Value("${redis.password}")
-    private String password;
+//    @Value("${redis.password}")
+//    private String password;
 
     @Bean
     @Qualifier("testLock")
     public RLock getRedissonLock(){
         String lockName = "testLock";
         Config config = new Config();
-        config.useSingleServer().setAddress(address).setPassword(password);
+        config.useSingleServer().setAddress(address);
+//        config.useSingleServer().setAddress(address).setPassword(password);
         RedissonClient redissonClient = Redisson.create(config);
         RLock lock = redissonClient.getLock(lockName);
         return lock;
